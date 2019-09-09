@@ -20,6 +20,7 @@ public class DetailActivity extends AppCompatActivity {
     private EditText mUrl;
     private Button btnEdit;
     private Button btnOpenUrl;
+    private Button btnDelete;
     private AppDatabase mDb;
 
     @Override
@@ -35,6 +36,7 @@ public class DetailActivity extends AppCompatActivity {
         mUrl = findViewById(R.id.text_url_detail);
         btnEdit = findViewById(R.id.edit_btn);
         btnOpenUrl = findViewById(R.id.open_url_btn);
+        btnDelete = findViewById(R.id.btn_delete);
 
         Intent intent = getIntent();
         final String idString = intent.getStringExtra("id");
@@ -77,6 +79,19 @@ public class DetailActivity extends AppCompatActivity {
                 Intent openUrlIntent = new Intent(getApplicationContext(),WebViewActivity.class);
                 openUrlIntent.putExtra("url",mUrl.getText().toString());
                 startActivity(openUrlIntent);
+            }
+        });
+
+        btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int id = Integer.parseInt(idString);
+                String nama = mName.getText().toString();
+                String url = mUrl.getText().toString();
+                URLData urlData = new URLData(nama,url);
+                urlData.setId(id);
+                mDb.urlDao().delete(urlData);
+                finish();
             }
         });
     }
