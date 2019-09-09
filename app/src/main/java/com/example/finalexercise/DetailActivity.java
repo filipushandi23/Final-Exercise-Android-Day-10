@@ -3,6 +3,7 @@ package com.example.finalexercise;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -36,30 +37,34 @@ public class DetailActivity extends AppCompatActivity {
         btnOpenUrl = findViewById(R.id.open_url_btn);
 
         Intent intent = getIntent();
-        //final int id = Integer.parseInt(intent.getStringExtra("id"));
+        final String idString = intent.getStringExtra("id");
         String name = intent.getStringExtra("name");
         String url = intent.getStringExtra("url");
 
         mName.setText(name);
-        mName.setEnabled(false);
         mUrl.setText(url);
-        mUrl.setEnabled(false);
+
+        //disable edit text
+        //mName.setEnabled(false);
+        //mUrl.setEnabled(false);
 
         btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mName.setEnabled(true);
-                mUrl.setEnabled(true);
-                btnEdit.setText("Save");
+//                mName.setEnabled(true);
+//                mUrl.setEnabled(true);
+//                btnEdit.setText("");
 
                 if(mName.getText().toString().equals("") || mUrl.getText().toString().equals("")){
                     Toast.makeText(getApplicationContext(),"You must fill the textfield!",Toast.LENGTH_SHORT).show();
                 }
                 else{
-//                    String nama = mName.getText().toString();
-//                    String url = mUrl.getText().toString();
-//                    URLData urlData = new URLData(id,nama,url);
-//                    mDb.urlDao().updateData(urlData);
+                    int id = Integer.parseInt(idString);
+                    String nama = mName.getText().toString();
+                    String url = mUrl.getText().toString();
+                    URLData urlData = new URLData(nama,url);
+                    urlData.setId(id);
+                    mDb.urlDao().updateData(urlData);
                     finish();
                 }
 

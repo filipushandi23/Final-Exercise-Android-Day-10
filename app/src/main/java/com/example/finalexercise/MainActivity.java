@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -54,7 +55,10 @@ public class MainActivity extends AppCompatActivity implements MyAdapter.MyAdapt
     @Override
     public void onClick(URLData data) {
         Intent intent = new Intent(this,DetailActivity.class);
-        //intent.putExtra("id",data.getId());
+        Log.d("ID",data.getId()+"");
+        Log.d("NAME",data.getNama()+"");
+
+        intent.putExtra("id",String.valueOf(data.getId()));
         intent.putExtra("name",data.getNama());
         intent.putExtra("url",data.getUrl());
         startActivity(intent);
