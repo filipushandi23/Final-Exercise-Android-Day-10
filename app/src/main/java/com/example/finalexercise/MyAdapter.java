@@ -9,11 +9,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.finalexercise.model.URLData;
+
 import java.util.List;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyAdapterViewHolder> {
 
-    private List<MyData> mListURL;
+    private List<URLData> mListURL;
     MyAdapterClickHandler mClickHandler;
 
     public MyAdapter(MyAdapterClickHandler clickHandler){
@@ -21,7 +23,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyAdapterViewHolde
     }
 
     public interface MyAdapterClickHandler{
-        void onClick(MyData data);
+        void onClick(URLData data);
     }
 
     @NonNull
@@ -36,8 +38,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyAdapterViewHolde
 
     @Override
     public void onBindViewHolder(@NonNull MyAdapterViewHolder holder, int position) {
-        String url = mListURL.get(position).getUrl();
-        holder.textView.setText(url);
+        String name = mListURL.get(position).getNama();
+        holder.textView.setText(name);
     }
 
     @Override
@@ -61,12 +63,11 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyAdapterViewHolde
         @Override
         public void onClick(View view) {
             int adapterPosition = getAdapterPosition();
-            //Log.v("Baking App", "Onclick 1");
             mClickHandler.onClick(mListURL.get(adapterPosition));
         }
     }
 
-    public void setListURL(List<MyData> listURL){
+    public void setListURL(List<URLData> listURL){
         mListURL = listURL;
         notifyDataSetChanged();
     }

@@ -8,8 +8,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
+import com.example.finalexercise.model.URLData;
+import com.example.finalexercise.util.AppDatabase;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -17,18 +18,17 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements MyAdapter.MyAdapterClickHandler {
     private RecyclerView recyclerView;
-    private List<MyData> listUrl;
+    private List<URLData> listUrl;
     private MyAdapter myAdapter;
+    private AppDatabase mDb;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         recyclerView = findViewById(R.id.recycler_view);
-        listUrl = populateFakeData();
 
         myAdapter = new MyAdapter(this);
-        myAdapter.setListURL(listUrl);
         recyclerView.setAdapter(myAdapter);
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this,3);
@@ -42,11 +42,19 @@ public class MainActivity extends AppCompatActivity implements MyAdapter.MyAdapt
                 startActivity(intent);
             }
         });
+        mDb = AppDatabase.getInstance(getApplicationContext());
     }
 
     @Override
-    public void onClick(MyData data) {
+    protected void onResume() {
+        super.onResume();
+        myAdapter.setListURL(mDb.urlDao().getAll());
+    }
+
+    @Override
+    public void onClick(URLData data) {
         Intent intent = new Intent(this,DetailActivity.class);
+        //intent.putExtra("id",data.getId());
         intent.putExtra("name",data.getNama());
         intent.putExtra("url",data.getUrl());
         startActivity(intent);
@@ -64,13 +72,10 @@ public class MainActivity extends AppCompatActivity implements MyAdapter.MyAdapt
         return super.onOptionsItemSelected(item);
     }
 
-    public List<MyData> populateFakeData(){
-        List<MyData> listUrl = new ArrayList<>();
-        listUrl.add(new MyData("Google","www.google.com"));
-        listUrl.add(new MyData("Yahoo","www.yahoo.com"));
-        listUrl.add(new MyData("Manchester United","www.manutd.com"));
-        listUrl.add(new MyData("Vogella","www.vogella.com"));
-        listUrl.add(new MyData("Medium","www.medium.com"));
-        return listUrl;
-    }
+//    public List<URLData> getData(){
+//        List<URLData> listUrl;
+//
+//        listUrl = mDb.urlDao().getAll();
+//        return listUrl;
+//    }
 }
